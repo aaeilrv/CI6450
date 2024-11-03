@@ -15,5 +15,5 @@ script = ExtResource("1_8ck6q")
 script = ExtResource("3_xlyg0")
 
 [node name="charater_that_moves" parent="." instance=ExtResource("4_ueuvu")]
-position = Vector2(9, -230)
+position = Vector2(102, -195)
 script = ExtResource("5_g2v10")

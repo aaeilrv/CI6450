@@ -13,7 +13,7 @@ func total_elements() -> float:
 
 # change to binary search (if I insert organized ofc)
 func smallest_element() -> NodeRecord:
-	var smallest = contained_values[0]
+	var smallest = contained_values[-1]
 	var i = 0
 	var N = total_elements()
 	
@@ -24,10 +24,10 @@ func smallest_element() -> NodeRecord:
 		
 	return smallest	
 	
-func contains(node: TileNode) -> bool:
+func contains(node: Vector2i) -> bool:
 	return contained_values.has(node)
 	
-func find(node: TileNode) -> NodeRecord: 
+func find(node: Vector2i) -> NodeRecord: 
 	var i = 0
 	var N = total_elements()
 	

@@ -23,8 +23,7 @@ func _input(event):
 	if Input.is_action_just_pressed("click"):
 		var mouse_position = get_global_mouse_position()
 		var mouse_to_map = world_map.tile_position(mouse_position)
-		var new_node = TileNode.new()
-		new_node.node_position = mouse_to_map
+		var new_node = mouse_to_map
 		#print("node: ", mouse_to_map)
 		# cofre: (8, 13)
 		# queremos llegar al de al lado (7,13)
@@ -37,21 +36,14 @@ func _input(event):
 		#print("\n")
 		
 		var character_position = world_map.tile_position(character.position)
-		var character_node = TileNode.new()
-		
-		character_node.node_position = character_position
+		var character_node = character_position
 		var a_star = AStar.new()
 		var heuristic = Heuristic.new()
 		
-		var cofre = TileNode.new()
-		cofre.node_position = Vector2i(7, 13)
-		heuristic.goal_node = cofre
+		var cofre = Vector2i(7, -13)
+		#heuristic.goal_node = cofre
 		
 		print(character_position)
 		
-		var x = a_star.a_star_algorithm(graph, character_node, cofre, heuristic)
+		var x = a_star.pathfinding(graph, character_node, cofre)
 		print(x)
-		
-#func _process(delta: float) -> void:
-	
-	
