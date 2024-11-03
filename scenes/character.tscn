@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://cc7oa2u5ifdvq"]
+
+[ext_resource type="Texture2D" uid="uid://b1mmxbj3v56sf" path="res://assets/16x16/Sprites/New/Chris Minecart Character.png" id="1_svv71"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ofxr6"]
+atlas = ExtResource("1_svv71")
+region = Rect2(0, 80, 80, 80)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_s27os"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ofxr6")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vhveu"]
+size = Vector2(4, 5)
+
+[node name="charater_that_moves" type="CharacterBody2D"]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_s27os")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -5.5)
+shape = SubResource("RectangleShape2D_vhveu")

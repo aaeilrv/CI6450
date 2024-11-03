@@ -1,15 +1,21 @@
 class_name Connection extends Node
 
-var fromNode: Vector2i
-var toNode: Vector2i
-var Cost: float = 0
+var from_node: TileNode
+var to_node: TileNode
+var cost: float = 0
 
 # Calculate eucledian distance to obtain cost:
-func getCost() -> float:
-	var dx = abs(toNode.x - fromNode.x)
-	var dy = abs(toNode.y - fromNode.y)
+func get_cost() -> float:
+	var dx = abs(to_node.node_position.x - from_node.node_position.x)
+	var dy = abs(to_node.node_position.y - from_node.node_position.y)
 
 	if dx <= 1 and dy <= 1:
 		return sqrt(dx * dx + dy * dy)
 	else:
 		return INF
+
+func get_from_node() -> TileNode:
+	return from_node
+	
+func get_to_node() -> TileNode:
+	return to_node
