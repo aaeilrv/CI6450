@@ -19,6 +19,7 @@ var current_state: int = State.WOODS_ONE : set = set_state
 @onready var second_enemy = $"../NPC3"
 @onready var pathline = $PathLine
 var path: Array
+@export var cell_size = Vector2i(16, 16)
 
 func set_state(new_state: int):
 	if new_state == current_state:
@@ -37,7 +38,7 @@ func _process(delta: float) -> void:
 			go_to_woods._process(delta)
 			set_path_line(path)
 			if map.tile_position(NPC.position) == Vector2i(50, 5):
-				await get_tree().create_timer(0.5,true,true).timeout
+				await get_tree().create_timer(4,true,true).timeout
 				set_state(State.WOODS_TWO)
 		State.WOODS_TWO:
 			var go_to_woods = TileFollowing.new()
@@ -47,7 +48,7 @@ func _process(delta: float) -> void:
 			go_to_woods._process(delta)
 			set_path_line(path)
 			if map.tile_position(NPC.position) == Vector2i(27, 8):
-				await get_tree().create_timer(0.2,true,true).timeout
+				await get_tree().create_timer(4,true,true).timeout
 				set_state(State.WOODS_THREE)
 		State.WOODS_THREE:
 			var go_to_woods = TileFollowing.new()
@@ -57,7 +58,7 @@ func _process(delta: float) -> void:
 			go_to_woods._process(delta)
 			set_path_line(path)
 			if map.tile_position(NPC.position) == Vector2i(44, 35):
-				await get_tree().create_timer(0.4,true,true).timeout
+				await get_tree().create_timer(4,true,true).timeout
 				set_state(State.WOODS_ONE)
 			
 func set_path_line(points):
@@ -69,3 +70,13 @@ func set_path_line(points):
 			local_points.append(map.game_position(point) - global_position)
 	local_points.append(map.game_position(points.back())-global_position)
 	pathline.points = local_points
+	
+func _physics_process(delta: float) -> void:
+	if path.size() > 1:
+		var centered_position = path[1] * cell_size + Vector2i.ONE * cell_size/2
+		await get_tree().create_timer(0.1,true,true).timeout
+		position.x = centered_position.x
+		position.y = centered_position.y
+
+		rotation = atan2(-velocity.x, velocity.y)
+		pathline.global_rotation = 0

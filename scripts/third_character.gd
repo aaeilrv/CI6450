@@ -17,6 +17,7 @@ var current_state: int = State.GO_SLEEP : set = set_state
 @onready var map: Map = $"../map"
 @onready var pathline = $PathLine
 var path: Array
+@export var cell_size = Vector2i(16, 16)
 
 func set_state(new_state: int):
 	if new_state == current_state:
@@ -81,3 +82,13 @@ func set_path_line(points):
 			local_points.append(map.game_position(point) - global_position)
 	local_points.append(map.game_position(points.back())-global_position)
 	pathline.points = local_points
+
+func _physics_process(delta: float) -> void:
+	if path.size() > 1:
+		var centered_position = path[1] * cell_size + Vector2i.ONE * cell_size/2
+		await get_tree().create_timer(0.1,true,true).timeout
+		position.x = centered_position.x
+		position.y = centered_position.y
+
+		rotation = atan2(-velocity.x, velocity.y)
+		pathline.global_rotation = 0
