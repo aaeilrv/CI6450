@@ -4,6 +4,10 @@ class_name Map extends Node2D
 @onready var soil_details: TileMapLayer = $soil_obstacles
 @onready var obstacles: TileMapLayer = $obstacles
 
+@onready var npc_1: CharacterBody2D = $"../NPC1"
+@onready var npc_2: CharacterBody2D = $"../NPC2"
+@onready var npc_3: CharacterBody2D = $"../NPC3"
+
 var is_reachable_custom_data = "is_reachable"
 
 func tile_position(position: Vector2) -> Vector2i:
@@ -11,6 +15,16 @@ func tile_position(position: Vector2) -> Vector2i:
 	
 func game_position(position: Vector2i) -> Vector2:
 	return tile_map.map_to_local(position)
+	
+func isOccupied(TileNode: Vector2i) -> bool:
+	if TileNode == tile_position(npc_1.position):
+		return true
+	if TileNode == tile_position(npc_2.position):
+		return true
+	if TileNode == tile_position(npc_3.position):
+		return true
+	else:
+		return false
 
 # If the tile data is not empty, it means it has
 # an obstacle in it.
