@@ -20,6 +20,6 @@ func get_from_node() -> Vector2i:
 func get_to_node() -> Vector2i:
 	return to_node
 
-func _to_string() -> String:
-	return str(from_node) + "->" + str(to_node) + "\n"
+#func _to_string() -> String:
+#	return str(from_node) + "->" + str(to_node) + "\n"
 	

@@ -1,0 +1,30 @@
+[gd_scene load_steps=8 format=3 uid="uid://n0diachu0d83"]
+
+[ext_resource type="Script" path="res://scripts/start.gd" id="1_dtk3t"]
+[ext_resource type="PackedScene" uid="uid://chs5h0507gg3c" path="res://scenes/map.tscn" id="2_e6ykp"]
+[ext_resource type="PackedScene" uid="uid://cc7oa2u5ifdvq" path="res://scenes/enemy.tscn" id="4_ueuvu"]
+[ext_resource type="Script" path="res://scripts/character.gd" id="5_g2v10"]
+[ext_resource type="PackedScene" uid="uid://dmvvbho4t8y0k" path="res://scenes/slime.tscn" id="6_aynxp"]
+[ext_resource type="Script" path="res://scenes/slime.gd" id="7_iul0b"]
+[ext_resource type="Script" path="res://scripts/grid.gd" id="7_x60oy"]
+
+[node name="start" type="Node2D"]
+script = ExtResource("1_dtk3t")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(577, 317)
+
+[node name="map" parent="." groups=["Map"] instance=ExtResource("2_e6ykp")]
+
+[node name="grid" type="Node2D" parent="."]
+visible = false
+script = ExtResource("7_x60oy")
+
+[node name="enemy" parent="." instance=ExtResource("4_ueuvu")]
+position = Vector2(373, 77)
+script = ExtResource("5_g2v10")
+metadata/_edit_group_ = true
+
+[node name="slime" parent="." instance=ExtResource("6_aynxp")]
+position = Vector2(597, 278)
+script = ExtResource("7_iul0b")

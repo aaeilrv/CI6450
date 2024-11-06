@@ -1,94 +1,58 @@
 class_name AStar extends Node
 
-const heuristic = preload("res://scripts/heuristic.gd")
+func heuristic(from_node: Vector2i, to_node: Vector2i) -> float:
+	var dx = to_node.x - from_node.x
+	var dy = to_node.y - from_node.y
+	var distance: float
+	
+	# Euclidian Distance
+	#distance = sqrt(dx ** 2 + dy ** 2)
+	
+	# Manhattan distance:
+	distance = abs(dx) + abs(dy)
+	
+	return distance
 
-func pathfinding(graph: Graph, start: Vector2i, end: Vector2i) -> Array[Connection]:
-	var start_record = NodeRecord.new()
-	start_record.node = start
-	start_record.connection = null
-	start_record.cost_so_far = 0
-	start_record.estimated_total_cost = heuristic.estimate(start, end)
+func path_building(graph: Graph, start: Vector2i, goal: Vector2i) -> Array[Vector2i]:
+	var parents = self.pathfinding(graph, start, goal)
+	var current: Vector2i = goal
+	var path: Array[Vector2i] = []
 	
-	var open = PathFindingList.new()
-	open.insert(start_record)
-	var closed = PathFindingList.new()
-	
-	var current: NodeRecord
-	
-	# Iterate through processing each node
-	while open.total_elements() > 0:
-
-		current = open.smallest_element()
+	if goal not in parents:
+		return []
+	while current != start:
+		current = parents[current]
+		path.append(current)
+	path.reverse()
+	return path
 		
-		if current.node == end:
+
+func pathfinding(graph: Graph, start: Vector2i, end: Vector2i):
+	var open_list = PriorityQueue.new()
+	open_list.insert(start, 0)
+	
+	var came_from = {} # stores the tile and the parent where it came frfom
+	var cost_so_far = {} 
+	
+	came_from[start] = null
+	cost_so_far[start] = 0
+	
+	while not open_list.empty():
+		var current = open_list.extract()
+		
+		if current == end:
 			break
 		
-		var connections = graph.get_connections(current.node)
+		# get all the valid connections of the current node
+		var neighbors = graph.get_connections(current)
 		
-		# loop through each connection in turn
-		for connection in connections:
-			# get the estimated cost for the end node
-			var end_node = connection.get_to_node()
-			var end_node_cost = current.cost_so_far + connection.get_cost()
-			
-			var end_node_record: NodeRecord
-			var end_node_heuristic: float
-			
-			if closed.contains(end_node):
-				end_node_record = closed.find(end_node)
+		for neighbor in neighbors:
+			var new_cost = cost_so_far[current] + neighbor.get_cost()
+			# if we haven't seen this neighbor or if the new cost is < than the cost we knew
+			if neighbor.to_node not in cost_so_far or new_cost < cost_so_far[neighbor.to_node]:
+				cost_so_far[neighbor.to_node] = new_cost
+				var priority = new_cost + self.heuristic(neighbor.to_node, end)
+				open_list.insert(neighbor.to_node, priority)
+				came_from[neighbor.to_node] = current
 				
-				if end_node_record.cost_so_far <= end_node_cost:
-					continue
-				
-				closed.delete(end_node_record)
-				
-				end_node_heuristic = end_node_record.estimated_total_cost -\
-				 end_node_record.cost_so_far
-				
-			elif open.contains(end_node):
-				end_node_record = open.find(end_node)
-				
-				if end_node_record.cost_so_far <= end_node_cost:
-					continue
-					
-				end_node_heuristic = end_node_record.estimated_total_cost -\
-				 end_node_record.cost_so_far
-				
-			else:
-				end_node_record = NodeRecord.new()
-				end_node_record.node = end_node
-				
-				# we calculate the heuristic value
-				end_node_heuristic = heuristic.estimate(end_node, end)
-		
-			# update the node: cost, estimate and connection if needed
-			end_node_record.cost_so_far = end_node_cost
-			end_node_record.connection = connection
-			end_node_record.estimated_total_cost = end_node_cost + end_node_heuristic
-			
-			# add it to the open list
-			if not open.contains(end_node):
-				open.insert(end_node_record)
-				
-		# remove current node from the open list
-		open.remove(current)
-		closed.insert(current)
-	
-	# if we've found the goal or there are no more nodes to search
-	if current.node != end:
-		# we've round out of nodes, there is no solution
-		return []
-	
-	else:
-		# compile the list of connections in the path
-		var path: Array[Connection] = []
-			
-		# work back along the path, accumulating connections
-		while current.node != start:
-			path.append(current.connection)
-			var x = current.connection.get_from_node()
-			var y = closed.find(x)
-			current = y
-			
-		path.reverse()
-		return path
+	return came_from

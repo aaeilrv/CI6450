@@ -1,0 +1,52 @@
+[gd_scene load_steps=9 format=3 uid="uid://cc7oa2u5ifdvq"]
+
+[ext_resource type="Script" path="res://scripts/guy.gd" id="1_iq2ri"]
+[ext_resource type="Texture2D" uid="uid://b1mmxbj3v56sf" path="res://assets/16x16/Sprites/New/Chris Minecart Character.png" id="1_svv71"]
+[ext_resource type="Script" path="res://scripts/states/state_machine.gd" id="2_f6s5s"]
+[ext_resource type="Script" path="res://scripts/states/wandering.gd" id="3_8rlxd"]
+[ext_resource type="Script" path="res://scripts/states/npc_following.gd" id="5_elx32"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ofxr6"]
+atlas = ExtResource("1_svv71")
+region = Rect2(0, 80, 80, 80)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_s27os"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ofxr6")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vhveu"]
+size = Vector2(4, 5)
+
+[node name="guy" type="CharacterBody2D"]
+script = ExtResource("1_iq2ri")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_s27os")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -5.5)
+shape = SubResource("RectangleShape2D_vhveu")
+
+[node name="PathLine" type="Line2D" parent="."]
+rotation = 1.57079
+points = PackedVector2Array(-5, -1.11063e-05)
+width = 1.0
+default_color = Color(0.85306, 0.000604907, 0.857925, 1)
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("2_f6s5s")
+initial_state = NodePath("")
+
+[node name="Wandering" type="Node" parent="StateMachine" node_paths=PackedStringArray("npc")]
+script = ExtResource("3_8rlxd")
+npc = NodePath("../..")
+
+[node name="NPCFollowing" type="Node" parent="StateMachine"]
+script = ExtResource("5_elx32")

@@ -4,46 +4,23 @@ extends Node2D
 @onready var character = $charater_that_moves
 @onready var graph: Graph
 
-#@onready var tile_map: TileMapLayer = $WorldRepresentation/background
-#@onready var soil_details: TileMapLayer = $WorldRepresentation/soil_obstacles
-#@onready var obstacles: TileMapLayer = $WorldRepresentation/obstacles
+@export var show_nodes: bool
 
 var is_reachable_custom_data = "is_reachable"
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	var new_graph = Graph.new()
-	graph = new_graph
-	graph.map = world_map
-
 func _input(event):
-	#var new_graph = Graph.new()
-	#new_graph.map = world_map
-	
+	# hide nodes or not
+	if Input.is_action_just_pressed("right_click"):
+		show_nodes = !show_nodes
+		if not show_nodes:
+			$".".get_child(7).hide()
+		if show_nodes:
+			$".".get_child(7).show()
+		
 	if Input.is_action_just_pressed("click"):
 		var mouse_position = get_global_mouse_position()
 		var mouse_to_map = world_map.tile_position(mouse_position)
 		var new_node = mouse_to_map
-		#print("node: ", mouse_to_map)
-		# cofre: (8, 13)
-		# queremos llegar al de al lado (7,13)
 		
-		
-			
-		#var obtained_connections = new_graph.get_connections(new_node)	
-		#for connection in obtained_connections:
-		#	print("node connection: ", connection.to_node.node_position)
-		#print("\n")
-		
-		var character_position = world_map.tile_position(character.position)
-		var character_node = character_position
-		var a_star = AStar.new()
-		var heuristic = Heuristic.new()
-		
-		var cofre = Vector2i(7, -13)
-		#heuristic.goal_node = cofre
-		
-		print(character_position)
-		
-		var x = a_star.pathfinding(graph, character_node, cofre)
-		print(x)
+		print("global mouse position: ", mouse_position)
+		print("local mouse position: ", mouse_to_map)

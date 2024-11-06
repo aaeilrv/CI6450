@@ -1,0 +1,31 @@
+[gd_scene load_steps=4 format=3 uid="uid://dgfyqld7ogd5t"]
+
+[ext_resource type="Texture2D" uid="uid://dhiy06hc2m7t8" path="res://icon.svg" id="1_20ahs"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_fxsbi"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_20ahs")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_b542u"]
+radius = 4.12311
+
+[node name="NPC" type="CharacterBody2D"]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-1.90735e-06, -1.90735e-06)
+scale = Vector2(0.113282, 0.113282)
+sprite_frames = SubResource("SpriteFrames_fxsbi")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_b542u")
+
+[node name="PathLine" type="Line2D" parent="."]
+width = 2.0
+default_color = Color(0.127144, 0.219035, 1, 1)

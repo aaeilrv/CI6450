@@ -29,7 +29,5 @@ func get_connections(fromNode: Vector2i) -> Array[Connection]:
 		var is_valid = map.validTile(all_neighbors[i])
 		if is_valid:
 			obtained_connections.append(new_connection)
-		obtained_connections.append(new_connection)
 		i += 1
-	
 	return obtained_connections

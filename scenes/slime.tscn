@@ -1,0 +1,35 @@
+[gd_scene load_steps=5 format=3 uid="uid://dmvvbho4t8y0k"]
+
+[ext_resource type="Texture2D" uid="uid://b4ch4av226ay0" path="res://assets/16x16/Sprites/Old/Slime 01.png" id="1_c0obx"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ssyrs"]
+atlas = ExtResource("1_c0obx")
+region = Rect2(0, 0, 16, 18)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_mtqsc"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ssyrs")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3ob3g"]
+radius = 3.16228
+
+[node name="Slime" type="CharacterBody2D"]
+metadata/_edit_group_ = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_mtqsc")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 1)
+shape = SubResource("CircleShape2D_3ob3g")
+
+[node name="PathLine" type="Line2D" parent="."]
+width = 2.0
+default_color = Color(0.874905, 0.193422, 0.462482, 1)

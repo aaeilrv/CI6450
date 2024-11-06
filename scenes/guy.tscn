@@ -20,7 +20,7 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vhveu"]
 size = Vector2(4, 5)
 
-[node name="charater_that_moves" type="CharacterBody2D"]
+[node name="guy" type="CharacterBody2D"]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_s27os")
@@ -28,3 +28,9 @@ sprite_frames = SubResource("SpriteFrames_s27os")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -5.5)
 shape = SubResource("RectangleShape2D_vhveu")
+
+[node name="PathLine" type="Line2D" parent="."]
+rotation = 1.57079
+points = PackedVector2Array(-5, -1.11063e-05)
+width = 2.0
+default_color = Color(0.917647, 0.533333, 0.188235, 1)
